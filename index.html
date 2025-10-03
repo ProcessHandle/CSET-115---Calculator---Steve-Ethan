@@ -59,8 +59,9 @@
 
         #ButtonSect {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /*Rows of 4 per column */
-            grid-auto-rows: 60px; 
+            grid-template-columns: repeat(4, 1fr);
+            /*Rows of 4 per column */
+            grid-auto-rows: 60px;
             gap: 8px;
             margin-top: 15px;
         }
@@ -85,7 +86,8 @@
 
         #HistoryPane {
             width: 250px;
-            max-height: 500px; /* Set our max height and add overflow so it will then start to scroll past 500px*/
+            max-height: 500px;
+            /* Set our max height and add overflow so it will then start to scroll past 500px*/
             overflow-y: auto;
             overflow-x: hidden;
             color: #e0e0e0;
@@ -96,12 +98,14 @@
             text-align: center;
             font-size: 18px;
             color: #d0d0d0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /*Add divider without needing ::before */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            /*Add divider without needing ::before */
             padding-bottom: 6px;
         }
 
         .ihist {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);  /*Add divider without needing ::before */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            /*Add divider without needing ::before */
             padding: 6px 0;
             font-size: 15px;
         }
@@ -176,6 +180,7 @@
 
         btns.forEach(btn => { // Iterate through our button array 
             btn.addEventListener("click", () => {
+                console.log("Current: " + curr + ` Last: ` + last) // Debugging purposes
                 let val = btn.innerText;
 
                 if (!isNaN(val) || val === ".") {
@@ -197,8 +202,10 @@
                     resflag = false;
                 }
                 else if (val === "⌫") {
-                    display.value = display.value.slice(0, -1); // Removes the last character from our display string.
-                    resflag = false;
+                    if (!resflag) {
+                        display.value = display.value.slice(0, -1); // Removes the last character from our display string.
+                        // resflag = false;
+                    }
                 }
                 else if (val === "+/-") {
                     if (display.value.startsWith("-")) { // Our negative check (returns a boolean)
@@ -238,7 +245,7 @@
                     display.value = 1 / parseFloat(display.value);  // Divide by one since we cant display fractions easily
                     resflag = true;
                 }
-                else { 
+                else {
                     curr += display.value + val;
                     sub.innerText = curr;
                     display.value = "";
