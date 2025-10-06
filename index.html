@@ -124,6 +124,24 @@
             font-weight: bold;
             color: #ffffff;
         }
+
+        .trash {
+            scale: 1.15;
+            filter: invert();
+            transition: transform 0.1s
+        }
+
+        .trash:active {
+            transform: scale(0.95);
+        }
+
+        #removehist {
+            background-color: transparent;
+            border-color: transparent;
+            padding-top: 15px;
+            display: flex;
+            float: right;
+        }
     </style>
 
 
@@ -165,6 +183,7 @@
     <div id="HistoryPane">
         <h3>History</h3>
         <div id="HistoryList"></div>
+        <button id="removehist"><ion-icon class="trash" name="trash-outline"></ion-icon></button>
     </div>
 
     <script>
@@ -172,6 +191,7 @@
         let sub = document.getElementById("SubDisplay");
         let btns = document.querySelectorAll("#ButtonSect button"); // Grabs all our buttons as an array
         let history = document.getElementById("HistoryList");
+        let clearhist = document.getElementById("removehist")
         let curr = "";
         let last = "";
         let resflag = false; // Set a flag so we can clear our results so new numbers/ops arent added to the end
@@ -182,6 +202,10 @@
             div.innerHTML = `<div class="ehist">${exp} =</div><div class="history-res">${res}</div>`;
             history.prepend(div); // Prepend adds our new history to the top of the list.
         }
+
+        clearhist.addEventListener("click", () => {
+            history.innerHTML = '' // Simpler way to clear ig
+        })
 
         btns.forEach(btn => { // Iterate through our button array 
             btn.addEventListener("click", () => {
@@ -259,6 +283,8 @@
             });
         });
     </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
