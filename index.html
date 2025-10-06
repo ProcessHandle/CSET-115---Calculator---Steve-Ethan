@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <style>
+        html {
+            transition: filter 0.3s ease;  /* This is so when we invert / revert our color scheme it will have a smooth transition */
+        }
+
         body {
             display: flex;
             justify-content: center;
@@ -135,7 +139,18 @@
             transform: scale(0.95);
         }
 
-        #removehist {
+        .theme {
+            scale: 1.15;
+            filter: invert();
+            transition: transform 0.1s
+        }
+
+        .theme:active {
+            transform: scale(0.95);
+        }
+
+        #removehist,
+        #colorscheme {
             background-color: transparent;
             border-color: transparent;
             padding-top: 15px;
@@ -177,7 +192,9 @@
             <button>+/-</button>
             <button>.</button>
             <button class="equal">=</button>
+
         </div>
+
     </div>
 
     <div id="HistoryPane">
@@ -185,6 +202,7 @@
         <div id="HistoryList"></div>
         <button id="removehist"><ion-icon class="trash" name="trash-outline"></ion-icon></button>
     </div>
+    <button id="colorscheme"><ion-icon class="theme" name="moon-outline"></ion-icon></button>
 
     <script>
         let display = document.getElementById("DisplaySect");
@@ -192,6 +210,8 @@
         let btns = document.querySelectorAll("#ButtonSect button"); // Grabs all our buttons as an array
         let history = document.getElementById("HistoryList");
         let clearhist = document.getElementById("removehist")
+        let colorsche = document.getElementById("colorscheme");
+        let colorico = colorsche.querySelector("ion-icon");
         let curr = "";
         let last = "";
         let resflag = false; // Set a flag so we can clear our results so new numbers/ops arent added to the end
@@ -248,7 +268,7 @@
 
                     try { // Use try for error handling so we can also display if theres a syntax error
                         let exp = curr + display.value;
-                        exp = exp.replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-"); // Regex to replace our unusual operator symbols so we can solve with eval reliably
+                        exp = exp.replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-"); // replace our unusual operator symbols so we can solve with eval reliably
                         let res = eval(exp);
                         sub.innerText = exp + " =";
                         display.value = res;
@@ -282,6 +302,17 @@
                 }
             });
         });
+
+        colorsche.addEventListener("click", () => {
+            const html = document.documentElement;
+            const curf = getComputedStyle(html).filter;
+
+            const inverted = curf.includes("invert(1)"); // Checking the current css display 
+            html.style.filter = inverted ? "none" : "invert(1) hue-rotate(180deg)"; // Logic to decide whether to invert or reset
+            colorico.setAttribute("name", inverted ? "moon-outline" : "sunny-outline"); // Logic to set the icon from the light to dark
+        });
+
+
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
